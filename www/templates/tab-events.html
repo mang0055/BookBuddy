@@ -1,0 +1,32 @@
+<ion-view view-title="Events">
+  <ion-content>
+    <div class="row">
+      <div class="col">
+        <label class="item item-input">
+          <span class="input-label">Start:</span>
+          <input type="date" id="StartDate" name="StartDate" ng-model="StartDate" date-format="dd-MM-yyyy"/>
+        </label>
+      </div>
+      <div class="col">
+        <label class="item item-input">
+          <span class="input-label">End:</span>
+          <input type="date" id="EndDate" name="EndDate" ng-model="EndDate" date-format="dd-MM-yyyy"/>
+        </label>
+      </div>
+      <div class="col">
+        <button ion-button clear ng-click="applyAwesomeFilter()">Apply</button>
+      </div>
+    </div>
+    <div>{{StartDate | date:'medium' }}</div>
+    <div>{{EndDate | date:'medium' }}</div>
+    <div class="list card"
+         ng-repeat="event in eventList | dateFilter:StartDate,EndDate">
+      <div class="item item-thumbnail-left" type="item-text-wrap">
+        <img ng-src="{{event.image_url}}" class="customized-image">
+        <h2>{{event.title}}</h2>
+        <p ng-show="event.start_at.__text != null">Start at: {{event.start_at.__text | date:'dd-MM-yyyy'}}</p>
+        <p ng-show="event.end_at.__text != null">End at : {{event.end_at.__text | date:'dd-MM-yyyy'}}</p>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

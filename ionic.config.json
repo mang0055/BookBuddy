@@ -1,0 +1,14 @@
+{
+  "name": "tabs",
+  "app_id": "",
+  "proxies": [
+    {
+      "path": "/search",
+      "proxyUrl": "https://www.goodreads.com/search"
+    },
+    {
+      "path": "/event",
+      "proxyUrl": "http://www.goodreads.com/event"
+    }
+  ]
+}
