@@ -1,0 +1,22 @@
+<!--
+  This template loads for the 'tab.friend-detail' state (app.js)
+  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
+  The FriendsCtrl pulls data from the Friends service (service.js)
+  The Friends service returns an array of friend data
+-->
+<ion-view view-title="Book Detail">
+  <ion-content class="padding">
+    <ion-card>
+      <img ng-src="{{book.best_book.image_url}}">
+    <ion-card-title>
+      <strong>{{book.best_book.title}}</strong>
+    </ion-card-title>
+    <p>
+      Author Name: {{book.best_book.author.name}}
+      The most popular industrial group ever, and largely
+      responsible for bringing the music to a mass audience.
+    </p>
+      <p><p ng-show="book.original_publication_year.__text != null">Publication year:
+      {{book.original_publication_year.__text}}</p></p>
+    </ion-card>
+</ion-view>

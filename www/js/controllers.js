@@ -30,7 +30,7 @@ angular.module('starter.controllers', [])
 
       $scope.show();
       Books.searchBook($scope.page, this.searchBookText).then(function (response) {
-        // console.log(response);
+        console.log(JSON.stringify(response));
         $scope.bookList = response.data.GoodreadsResponse.search.results.work;
         if ($scope.bookList.length == 0) {
           alert("Not Found.");
@@ -63,7 +63,7 @@ angular.module('starter.controllers', [])
       $scope.show();
       Books.searchBook($scope.page, this.searchBookText).then(function (response) {
         // console.log(response);
-        $scope.bookList = response.data.GoodreadsResponse.search.results.work;
+        $scope.bookList = response;
         if ($scope.bookList.length == 0) {
           $log.debug("Not Found - " + $scope.searchBookText);
           alert("Not Found.");
@@ -75,7 +75,7 @@ angular.module('starter.controllers', [])
     $scope.doRefresh = function () {
       Books.searchBook($scope.page, this.searchBookText).then(function (response) {
         // console.log(response);
-        $scope.bookList = response.data.GoodreadsResponse.search.results.work;
+        $scope.bookList = response;
         if ($scope.bookList.length == 0) {
           alert("Not Found.");
         }
@@ -84,13 +84,16 @@ angular.module('starter.controllers', [])
     };
 
   })
-
+  .controller('BookDetailCtrl', function ($scope, $stateParams, Books) {
+    $scope.book = Books.get($stateParams.bookId);
+    console.log(JSON.stringify($scope.book));
+  })
   .controller('EventsCtrl', function ($scope, Events) {
     $scope.pageEventCount = 1;
 
     $scope.getEvents = function () {
       Events.getAllEvents($scope.pageEventCount).then(function (response) {
-        console.log(JSON.stringify(response));
+        //console.log(JSON.stringify(response));
         $scope.eventList = response.data.GoodreadsResponse.events.event;
         // $scope.bookList = response.data.GoodreadsResponse.search.results.work;
         // if ($scope.bookList.length == 0) {
@@ -98,6 +101,11 @@ angular.module('starter.controllers', [])
         // }
 
       });
+
+      $scope.StartDate = new Date("2015-01-01");
+      $scope.EndDate = new Date();
+
+
     };
 
     // $scope.dateFilter=function()
@@ -132,12 +140,30 @@ angular.module('starter.controllers', [])
 
   // In the return function, we must pass in a single parameter which will be the data we will work on.
   // We have the ability to support multiple other parameters that can be passed into the filter optionally
-  return function (eventList, StartDate, EndDate) {
+  return function (input, startDate, endDate) {
     // Do filter work here
-    console.log(JSON.stringify(eventList));
-    var startDate = StartDate;
-    var endDate = EndDate;
-    return record.start_at.__text >= startDate && record.end_at.__text <= endDate;
+    // var startDate = StartDate;
+    // var endDate = EndDate;
+    // if(event==null){
+    //   return;
+    // }
+    // else{
+    //   if(event.start_at==null)return;
+    // }
+    // console.log(event.start_at.__text);
+    // return new Date(event.start_at.__text) >= new Date(startDate) && new Date(event.end_at.__text) <= new Date(endDate);
+    var retArray = [];
+
+    angular.forEach(input, function (obj) {
+      console.log(input);
+      var receivedDate = obj.start_at.__text;
+
+      if (receivedDate >= startDate && receivedDate <= endDate) {
+        retArray.push(obj);
+      }
+    });
+    console.log(retArray[0]);
+    return retArray;
   }
 })
 ;

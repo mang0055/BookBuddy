@@ -1,4 +1,4 @@
-<ion-view view-title="Books Dashboard">
+<ion-view view-title="Home">
   <ion-content class="padding">
     <ion-refresher
       pulling-text="Pull to refresh..."
@@ -13,7 +13,7 @@
         <i class="icon ion-ios-search-strong "></i> Search
       </button>
     </div>
-    <div class="list card" ng-repeat="book in bookList" on-swipe-left="onSwipeLeft()" on-swipe-right="onSwipeRight()">
+    <ion-item ng-repeat="book in bookList" on-swipe-left="onSwipeLeft()" on-swipe-right="onSwipeRight()"  href="#/tab/books/{{book.best_book.id.__text}}">
       <div class="item item-thumbnail-left" type="item-text-wrap">
         <img ng-src="{{book.best_book.small_image_url}}" class="customized-image">
         <h2>{{book.best_book.title}}</h2>
@@ -21,6 +21,6 @@
         <p ng-show="book.original_publication_year.__text != null">Publication year:
           {{book.original_publication_year.__text}}</p>
       </div>
-    </div>
+    </ion-item>
   </ion-content>
 </ion-view>

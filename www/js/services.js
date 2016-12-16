@@ -1,6 +1,7 @@
 angular.module('starter.services', [])
 
   .factory('Books', function ($http) {
+    var booksList = null;
     return {
 
       searchBook: function (page, searchText) {
@@ -11,13 +12,24 @@ angular.module('starter.services', [])
           url: url
         })
           .success(function (data) {
-            return data;
+            booksList = data.GoodreadsResponse.search.results.work;
+            return booksList;
           })
           .error(function (data) {
             console.log("Error while searching " + searchText + " - " + data);
             return data;
           });
         return promise;
+      },
+      get: function (bookId) {
+        if (booksList != null) {
+
+          for (var i = 0; i < booksList.length; i++) {
+            if (booksList[i].best_book.id.__text === bookId) {
+              return booksList[i];
+            }
+          }
+        }
       }
     }
   })
