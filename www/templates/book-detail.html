@@ -1,22 +1,23 @@
 <!--
-  This template loads for the 'tab.friend-detail' state (app.js)
-  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
-  The FriendsCtrl pulls data from the Friends service (service.js)
-  The Friends service returns an array of friend data
+  This template loads for the 'tab.book-detail' state (app.js)
+  'friend' is a $scope variable created in the BookDetailCtrl controller (controllers.js)
+  The BookDetailCtrl pulls data from the SingleBook service (service.js)
+  The Books service returns an array of Books data
 -->
 <ion-view view-title="Book Detail">
   <ion-content class="padding">
-    <ion-card>
-      <img ng-src="{{book.best_book.image_url}}">
-    <ion-card-title>
-      <strong>{{book.best_book.title}}</strong>
-    </ion-card-title>
-    <p>
-      Author Name: {{book.best_book.author.name}}
-      The most popular industrial group ever, and largely
-      responsible for bringing the music to a mass audience.
-    </p>
-      <p><p ng-show="book.original_publication_year.__text != null">Publication year:
-      {{book.original_publication_year.__text}}</p></p>
-    </ion-card>
+    <div class="list card">
+      <div class="item item-avatar">
+        <img src="{{book.authors.author.image_url.__cdata}}">
+        <h2>{{book.title}}</h2>
+        <p>{{book.authors.author.name}}</p>
+      </div>
+      <div class="item item-body">
+        <img class="item item-thumbnail" src="{{book.small_image_url}}">
+        <h1> {{book.title}}</h1>
+        <p ng-bind-html="book.description"></p>
+        <h3>Published on : {{book.publication_day}} / {{book.publication_month}} / {{book.publication_year}} </h3>
+      </div>
+    </div>
+  </ion-content>
 </ion-view>

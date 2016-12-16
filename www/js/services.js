@@ -21,15 +21,20 @@ angular.module('starter.services', [])
           });
         return promise;
       },
-      get: function (bookId) {
-        if (booksList != null) {
-
-          for (var i = 0; i < booksList.length; i++) {
-            if (booksList[i].best_book.id.__text === bookId) {
-              return booksList[i];
-            }
-          }
-        }
+      getBookDetail: function (bookId) {
+        var url = 'http://localhost:8100/book/show/' + bookId + '?key=9ZOarJDswAwZbICWDQVvew';
+        var promiseBook = $http({
+          method: 'GET',
+          url: url
+        })
+          .success(function (data) {
+            return data;
+          })
+          .error(function (data) {
+            console.log("Error while getting single book " + data);
+            return data;
+          });
+        return promiseBook;
       }
     }
   })

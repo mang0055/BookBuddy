@@ -9,6 +9,10 @@
     {
       "path": "/event",
       "proxyUrl": "http://www.goodreads.com/event"
+    },
+    {
+      "path": "/book",
+      "proxyUrl": "http://www.goodreads.com/book"
     }
   ]
 }

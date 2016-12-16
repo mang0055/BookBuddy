@@ -84,9 +84,29 @@ angular.module('starter.controllers', [])
     };
 
   })
-  .controller('BookDetailCtrl', function ($scope, $stateParams, Books) {
-    $scope.book = Books.get($stateParams.bookId);
-    console.log(JSON.stringify($scope.book));
+  .controller('BookDetailCtrl', function ($scope, $stateParams, Books, $ionicLoading) {
+    $scope.show = function () {
+      $ionicLoading.show({
+        template: 'Loading...',
+        duration: 3000,
+        animation: 'fade-in',
+        noBackdrop: false
+      }).then(function () {
+        console.log("The loading indicator is now displayed");
+      });
+    };
+    $scope.hide = function () {
+      $ionicLoading.hide().then(function () {
+        console.log("The loading indicator is now hidden");
+      });
+    };
+    $scope.show();
+    Books.getBookDetail($stateParams.bookId).then(function (res) {
+      console.log(JSON.stringify(res));
+      $scope.book = res.data.GoodreadsResponse.book;
+      $scope.hide();
+    });
+
   })
   .controller('EventsCtrl', function ($scope, Events) {
     $scope.pageEventCount = 1;
@@ -95,74 +115,43 @@ angular.module('starter.controllers', [])
       Events.getAllEvents($scope.pageEventCount).then(function (response) {
         //console.log(JSON.stringify(response));
         $scope.eventList = response.data.GoodreadsResponse.events.event;
-        // $scope.bookList = response.data.GoodreadsResponse.search.results.work;
-        // if ($scope.bookList.length == 0) {
-        //   alert("Not Found.");
-        // }
+        if ($scope.eventList.length == 0) {
+          alert("Not Found.");
+        }
 
       });
 
-      $scope.StartDate = new Date("2015-01-01");
-      $scope.EndDate = new Date();
-
+      //Demo Purpose setting fixed dates
+      // $scope.StartDate = new Date("2015-01-01");
+      // $scope.EndDate = new Date("2018-01-01");
 
     };
 
-    // $scope.dateFilter=function()
-    // {
-    //   return function(record,StartDate,EndDate) {
-    //     // var myStringDate = StartDate.replace(/\D/g, " ");
-    //     // var dObj = myStringDate.split(" ");
-    //     // var startDate = new Date(dObj[0], (dObj[1]-1), dObj[2], dObj[3], dObj[4], dObj[5]);
-    //     //
-    //     // var myStringDate1 = EndDate.replace(/\D/g, " ");
-    //     // var dObj1 = myStringDate1.split(" ");
-    //     // var endDate = new Date(dObj1[0], (dObj1[1]-1), dObj1[2], dObj1[3], dObj1[4], dObj1[5]);
-    //     var startDate = new Date("2016-12-15");
-    //     var endDate = new Date("2018-08-06");
-    //     return record.start_at.__text >= startDate && record.end_at.__text <= endDate;
-    //   }
-    // }
     $scope.applyAwesomeFilter = function () {
       $scope.dateFilter();
 
     };
-    // $scope.dateFilter = function (record) {
-    //   var startDate = new Date($scope.StartDate);
-    //   var endDate = new Date($scope.EndDate);
-    //
-    //   return record.start_at.__text >= startDate && record.end_at.__text <= endDate;
-    // };
-
-
     $scope.getEvents($scope.pageEventCount);
   }).filter('dateFilter', function () {
 
   // In the return function, we must pass in a single parameter which will be the data we will work on.
   // We have the ability to support multiple other parameters that can be passed into the filter optionally
-  return function (input, startDate, endDate) {
+  return function (input, StartDate, EndDate) {
     // Do filter work here
-    // var startDate = StartDate;
-    // var endDate = EndDate;
-    // if(event==null){
-    //   return;
-    // }
-    // else{
-    //   if(event.start_at==null)return;
-    // }
-    // console.log(event.start_at.__text);
-    // return new Date(event.start_at.__text) >= new Date(startDate) && new Date(event.end_at.__text) <= new Date(endDate);
+    var startDate = new Date(StartDate);
+    var endDate = new Date(EndDate);
     var retArray = [];
 
     angular.forEach(input, function (obj) {
-      console.log(input);
-      var receivedDate = obj.start_at.__text;
 
-      if (receivedDate >= startDate && receivedDate <= endDate) {
+      var stDate = new Date(obj.start_at.__text);
+      var edDate = new Date(obj.start_at.__text);
+      // console.log(stDate + " " + edDate);
+      if (stDate >= startDate && edDate <= endDate) {
         retArray.push(obj);
       }
     });
-    console.log(retArray[0]);
+    // console.log(retArray.length);
     return retArray;
   }
 })
